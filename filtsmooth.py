@@ -100,9 +100,10 @@ class ScoreMatchingFilter():
         self.Sig0 = Sig0
 
         self.c_W = 1
-        self.W = lambda y, y_hat : 1 / np.sqrt((1 + norm(y - y_hat)**2 / self.c_W**2))
+        self.beta = 1
+        self.W = lambda y, y_hat : self.beta / np.sqrt((1 + norm(y - y_hat)**2 / self.c_W**2))
         self.logW2 = lambda y, y_hat : np.log(self.W(y, y_hat)**2)
-        self.logW2_jac = lambda y, y_hat : -(1 / (1 + norm(y - y_hat)**2 / self.c_W**2)) * (2/self.c_W**2) * norm(y - y_hat)
+        self.logW2_jac = lambda y, y_hat : -2 * (y - y_hat) / (self.c_W**2 + (y - y_hat)**2)
 
         return
     
